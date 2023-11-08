@@ -1,5 +1,6 @@
 import pygame
 import os
+import math
 
 from modules.Bullet import Bullet
 from modules.Enemy import Enemy
@@ -95,7 +96,7 @@ while running:
 
     for bullet in playerBulletList:
         pygame.draw.circle(screen, bullet.color, (bullet.x, bullet.y), bullet.rad)
-        bullet.update()
+        playerBulletList = bullet.update(playerBulletList)
 
     for bullet in playerBulletList:
         flag = False
@@ -125,15 +126,21 @@ while running:
     if frame_tick == 380:
         for enemy in enemyList:
             enemyBulletList.append(Bullet(enemy.x, enemy.y, (255, 80, 0), (posx-enemy.x)/80, (posy-enemy.y)/80))
+    if frame_tick == 500:
+        enemyList.append(Enemy(50, 0, (255,80,0), 0, 1.5, 1))
+    if frame_tick == 520:
+        enemyList.append(Enemy(SCREEN_WIDTH-50, 0, (255,80,0), 0, 1.5, 1))       
+    if frame_tick == 540:
+        enemyList.append(Enemy(SCREEN_WIDTH//2, 0, (255,80,0), 0, 1.5, 1))
 
     # 잡몹 draw
     for enemy in enemyList:
         pygame.draw.circle(screen, enemy.color, (enemy.x, enemy.y), enemy.rad)
-        enemy.update_pattern1()
+        enemyBulletList = enemy.update(enemyBulletList)
     
     for bullet in enemyBulletList:
         pygame.draw.circle(screen, bullet.color, (bullet.x, bullet.y), bullet.rad)
-        bullet.update()
+        enemyBulletList = bullet.update(enemyBulletList)
 
     for bullet in enemyBulletList:
         flag = False
