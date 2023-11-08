@@ -1,6 +1,6 @@
 import pygame
 import os
-import math
+import random
 
 from modules.Bullet import Bullet
 from modules.Enemy import Enemy
@@ -25,7 +25,7 @@ bgm.play(-1)
 
 posx = SCREEN_WIDTH // 2
 posy = SCREEN_HEIGHT - 100
-rad = 20
+rad = 14
 playerColor = (102, 255, 102)
 hp = 5
 speed = 3
@@ -127,11 +127,17 @@ while running:
         for enemy in enemyList:
             enemyBulletList.append(Bullet(enemy.x, enemy.y, (255, 80, 0), (posx-enemy.x)/80, (posy-enemy.y)/80))
     if frame_tick == 500:
-        enemyList.append(Enemy(50, 0, (255,80,0), 0, 1.5, 1))
+        enemyList.append(Enemy(50, 0, (255,80,0), 0, 1.5, etype=1))
     if frame_tick == 520:
-        enemyList.append(Enemy(SCREEN_WIDTH-50, 0, (255,80,0), 0, 1.5, 1))       
+        enemyList.append(Enemy(SCREEN_WIDTH-50, 0, (255,80,0), 0, 1.5, etype=1))
     if frame_tick == 540:
-        enemyList.append(Enemy(SCREEN_WIDTH//2, 0, (255,80,0), 0, 1.5, 1))
+        enemyList.append(Enemy(SCREEN_WIDTH//2, 0, (255,80,0), 0, 1.5, etype=1))
+    if frame_tick == 560:
+        enemyList.append(Enemy(random.randint(16, SCREEN_WIDTH-16), 0, (255,80,0), 0, 1.5, etype=2))
+    if frame_tick == 580:
+        enemyList.append(Enemy(random.randint(16, SCREEN_WIDTH-16), 0, (255,80,0), 0, 1.5, etype=2))
+    if frame_tick == 600:
+        enemyList.append(Enemy(random.randint(16, SCREEN_WIDTH-16), 0, (255,80,0), 0, 1.5, etype=2))
 
     # 잡몹 draw
     for enemy in enemyList:

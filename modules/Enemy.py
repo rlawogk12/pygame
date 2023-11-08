@@ -1,4 +1,5 @@
 from .Bullet import Bullet
+import random
 
 class Enemy:
     def __init__(self, x, y, color, xspeed, yspeed, etype = 0) -> None:
@@ -10,12 +11,15 @@ class Enemy:
         self.yspeed = yspeed
         self.etype = etype
         self.tick = 0
+        self.shooting_state = random.randint(80, 160)
 
     def update(self, bulletList=[]):
         if self.etype == 0:
             self.update_pattern1()
-        if self.etype == 1:
+        elif self.etype == 1:
             bulletList = self.update_pattern2(bulletList)
+        elif self.etype == 2:
+            bulletList = self.update_pattern3(bulletList)
         return bulletList
 
     def update_pattern1(self):
@@ -31,4 +35,14 @@ class Enemy:
         newList = bulletList
         if self.tick == 50:
             newList.append(Bullet(self.x, self.y, (255, 80, 0), 0, 6, rad=20, case=2))
+        return newList
+
+    def update_pattern3(self, bulletList):
+        self.tick += 1
+        self.x += self.xspeed
+        self.y += self.yspeed
+        newList = bulletList
+        if self.tick == self.shooting_state:
+            newList.append(Bullet(self.x, self.y, (255, 255, 0), -6, 0, rad=20, case=2))
+            newList.append(Bullet(self.x, self.y, (255, 255, 0), 6, 0, rad=20, case=2))
         return newList
