@@ -1,5 +1,6 @@
 import pygame
 import os
+import random
 
 from modules.Bullet import Bullet
 from modules.Enemy import Enemy
@@ -24,7 +25,7 @@ bgm.play(-1)
 
 posx = SCREEN_WIDTH // 2
 posy = SCREEN_HEIGHT - 100
-rad = 20
+rad = 14
 playerColor = (102, 255, 102)
 hp = 5
 speed = 3
@@ -78,7 +79,7 @@ while running:
                 FLAG_LEFT = False
             if event.key == pygame.K_SPACE:
                 FLAG_SHOOT = False
-    
+
     if FLAG_DOWN == True:
         posy += speed
     if FLAG_UP == True:
@@ -95,7 +96,7 @@ while running:
 
     for bullet in playerBulletList:
         pygame.draw.circle(screen, bullet.color, (bullet.x, bullet.y), bullet.rad)
-        bullet.update()
+        playerBulletList = bullet.update(playerBulletList)
 
     for bullet in playerBulletList:
         flag = False
@@ -105,7 +106,7 @@ while running:
             flag = True
         if flag == True:
             playerBulletList.remove(bullet)
-    
+
     # 잡몹 등장패턴
     if frame_tick == 120:
         enemyList.append(Enemy(0, 50, (255, 80, 0), 2, 0))
@@ -125,15 +126,27 @@ while running:
     if frame_tick == 380:
         for enemy in enemyList:
             enemyBulletList.append(Bullet(enemy.x, enemy.y, (255, 80, 0), (posx-enemy.x)/80, (posy-enemy.y)/80))
+    if frame_tick == 500:
+        enemyList.append(Enemy(50, 0, (255,80,0), 0, 1.5, etype=1))
+    if frame_tick == 520:
+        enemyList.append(Enemy(SCREEN_WIDTH-50, 0, (255,80,0), 0, 1.5, etype=1))
+    if frame_tick == 540:
+        enemyList.append(Enemy(SCREEN_WIDTH//2, 0, (255,80,0), 0, 1.5, etype=1))
+    if frame_tick == 560:
+        enemyList.append(Enemy(random.randint(16, SCREEN_WIDTH-16), 0, (255,80,0), 0, 1.5, etype=2))
+    if frame_tick == 580:
+        enemyList.append(Enemy(random.randint(16, SCREEN_WIDTH-16), 0, (255,80,0), 0, 1.5, etype=2))
+    if frame_tick == 600:
+        enemyList.append(Enemy(random.randint(16, SCREEN_WIDTH-16), 0, (255,80,0), 0, 1.5, etype=2))
 
     # 잡몹 draw
     for enemy in enemyList:
         pygame.draw.circle(screen, enemy.color, (enemy.x, enemy.y), enemy.rad)
-        enemy.update_pattern1()
-    
+        enemyBulletList = enemy.update(enemyBulletList)
+
     for bullet in enemyBulletList:
         pygame.draw.circle(screen, bullet.color, (bullet.x, bullet.y), bullet.rad)
-        bullet.update()
+        enemyBulletList = bullet.update(enemyBulletList)
 
     for bullet in enemyBulletList:
         flag = False
@@ -143,7 +156,7 @@ while running:
             flag = True
         if flag == True:
             enemyBulletList.remove(bullet)
-    
+
 
     for enemy in enemyList:
         flag = False
@@ -160,7 +173,7 @@ while running:
                 enemyList.remove(enemy)
                 playerBulletList.remove(bullet)
                 break
-    
+
     for bullet in enemyBulletList:
         if ((bullet.x - posx)**2 + (bullet.y - posy)**2)**0.5 <= rad + bullet.rad:
             hp -= 1
@@ -171,5 +184,3 @@ while running:
 
     pygame.draw.circle(screen, playerColor, (posx, posy), rad)
     pygame.display.update()
-
-print("게임 종료")
