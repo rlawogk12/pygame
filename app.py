@@ -28,7 +28,7 @@ posx = SCREEN_WIDTH // 2
 posy = SCREEN_HEIGHT - 100
 rad = 14
 playerColor = (102, 255, 102)
-hp = 20              
+hp = 20
 speed  = 3
 engage = 5
 
