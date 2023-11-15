@@ -18,7 +18,8 @@ class Bullet:
             self.case1()
         elif self.case == 2:
             bulletList = self.case2(bulletList)
-
+        elif self.case == 3:
+            bulletList = self.case3(bulletList)
         return bulletList
     
     def case1(self):
@@ -37,3 +38,11 @@ class Bullet:
                 newList.append(Bullet(self.x, self.y, (255, 80, 0), math.sin(math.pi*(val/180))*1.5, math.cos(math.pi*(val/180))*1.5))
             newList.remove(self)
         return newList
+    
+    def case3(self, bulletList):
+        self.tick += 1
+        newList = bulletList
+        if self.tick >= 300:
+            newList.remove(self)
+        return newList
+    
